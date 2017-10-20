@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1= 'File ' + fileName
+    form(action='/save-file', method='post')
+        input(type='hidden', value=fileName, name='fileName')
+        div= fileName
+        textarea(style='width: 100%; height: 100px;', name='fileContent')= fileContent
+        input(type='submit', value='Change')
