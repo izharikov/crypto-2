@@ -306,17 +306,14 @@ var serpentConstants = (function () {
     ]
 
     return {
-        LTTable : LTTable,
-        IPTable : IPTable,
-        FPTable : FPTable,
-        S_Table : S_Table,
-        S_Table_inverse : S_Table_inverse,
-        LTTableInverse : LTTableInverse
+        LTTable: LTTable,
+        IPTable: IPTable,
+        FPTable: FPTable,
+        S_Table: S_Table,
+        S_Table_inverse: S_Table_inverse,
+        LTTableInverse: LTTableInverse
     }
 }());
 
-if (window) {
-    window.serpentConstants = serpentConstants;
-} else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = serpentConstants;
-}
+module.exports = serpentConstants;
+

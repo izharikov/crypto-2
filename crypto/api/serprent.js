@@ -1,9 +1,7 @@
 var serpentConstants;
-if (window) {
-    serpentConstants = window.serpentConstants;
-} else if (typeof module !== 'undefined' && module.exports) {
-    serpentConstants = require('./serprent-constants');
-}
+
+serpentConstants = require('./serprent-constants');
+
 
 var data = "abcdttyeopgh1234";
 var key = "12345678901234567890123456789023";
@@ -13,7 +11,10 @@ var serpent = (function () {
     var PHI = 0x9e3779b9;
 
     function encode(data, key) {
-        var b0 = splitBlock(data);
+        var b0 = data;
+        if (typeof data === "string") {
+            b0 = splitBlock(data);
+        }
         b0 = replace(b0, serpentConstants.IPTable);
         var keys = generateKeys(key, serpentConstants.IPTable);
         var start = 0;
@@ -267,7 +268,7 @@ var serpent = (function () {
     return {
         encode: encode,
         decode: decode,
-        test: function (data, key) {
+        test: function (data, key, cfb) {
             var testArr = [10, 223, 30, 4];
             console.log(replace(replace(testArr, serpentConstants.IPTable), serpentConstants.FPTable));
             var t = 2147483649;
@@ -276,9 +277,78 @@ var serpent = (function () {
             var dec = decode(enc, key);
             console.log('decoded:', splitBlock(data), dec);
             console.log(data, convertFrom128BitToString(dec))
-        }
+            console.log("-----------")
+            var res = cfb.encrypt("dvfdsbkldflfxk lefsdnbl ke dklskdbkdlsfkbldk sgfs", key);
+            console.log('encrypt : ', res);
+            console.log('decr : ', cfb.decrypt(res, key))
+        },
+        convertFrom128BitToString: convertFrom128BitToString,
+        splitBlock: splitBlock,
+        cfb: (function () {
+            var initialVector = [10, 20, 30, 45];
+
+            function prepareToBlocks(data) {
+                var splited = ["0000000000000000"];
+                for (var i = 0; i < data.length; i += 16) {
+                    splited.push(data.slice(i, Math.min(data.length, i + 16)));
+                }
+                var lastBlockLength = splited[splited.length - 1].length;
+                for (i = lastBlockLength; i < 16; i++) {
+                    splited[splited.length - 1] += 0;
+                }
+                splited.push('' + lastBlockLength);
+                for (i = 1; i < 16; i++) {
+                    splited[splited.length - 1] += 0;
+                }
+                for (i = 0; i < splited.length; i++) {
+                    splited[i] = typeof splited[i] === "string" ? splitBlock(splited[i]) : splited[i];
+                }
+                return splited;
+            }
+
+            var c0 = 'abcderty1234oods';
+
+            return {
+                encrypt: function (data, key) {
+                    var result = '';
+                    var p = prepareToBlocks(data);
+                    // console.log('p : ', p, splitBlock(p[1]), convertFrom128BitToString(splitBlock(p[1])));
+                    var c = [c0];
+                    for (var i = 1; i < p.length; i++) {
+                        c[i] = encode(c[i - 1], key);
+                        c[i] = xor(c[i], p[i]);
+                    }
+                    for (i = 1; i < c.length; i++) {
+                        result += convertFrom128BitToString(c[i]);
+                    }
+                    return result;
+                },
+                decrypt: function (data, key) {
+                    var result = '';
+                    var c = prepareToBlocks(data);
+                    c[0] = splitBlock(c0);
+                    var p = [0];
+                    for (var i = 1; i < c.length; i++) {
+                        p[i] = xor(encode(c[i - 1], key), c[i]);
+                    }
+                    for (i = 1; i < p.length - 3; i++) {
+                        result += convertFrom128BitToString(p[i]);
+                    }
+                    var count = '';
+                    var last = convertFrom128BitToString(p[p.length - 2]);
+                    i = last.length - 1;
+                    while (last[i] === '0') {
+                        i--;
+                    }
+                    count = Number.parseInt(last.slice(0, i + 1));
+                    result += (convertFrom128BitToString(p[p.length - 3])).slice(0, count);
+                    return result;
+                }
+            }
+        })()
     }
 })();
+
 
 function bitRepresent(v) {
     var res = '';
@@ -288,10 +358,8 @@ function bitRepresent(v) {
     return res;
 }
 
-serpent.test(data, key);
+// serpent.test(data, key, serpent.cfb);
 
-if (window) {
-    window.serpent = serpent;
-} else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = serpent;
-}
+
+module.exports = serpent;
+

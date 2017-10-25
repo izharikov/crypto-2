@@ -6,15 +6,19 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@trust/webcrypto": "^0.7.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
+    "crypto-random-string": "^1.0.0",
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
+    "node-jose": "^0.10.0",
     "node-sass-middleware": "0.9.8",
     "pidcrypt": "0.0.31",
     "rsa-keygen": "^1.0.6",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "express-session": "latest"
   }
 }

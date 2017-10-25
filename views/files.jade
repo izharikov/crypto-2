@@ -6,3 +6,11 @@ block content
         each file in files
             li
                 a(href="/file/" + file)=file
+    input(id="file-name")
+    button(id="create-file")="Create file"
+    br
+    br
+    button(id="regenerate-rsa") Regenerate RSA key
+    script(src='/javascripts/libs/jquery-3.2.1.min.js')
+    script(src='/javascripts/index.js')
+    script(src='/javascripts/all-files.js')

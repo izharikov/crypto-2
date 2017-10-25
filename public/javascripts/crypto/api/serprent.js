@@ -280,7 +280,7 @@ var serpent = (function () {
             console.log('decoded:', splitBlock(data), dec);
             console.log(data, convertFrom128BitToString(dec))
             console.log("-----------")
-            var res = cfb.encrypt("dvfdsbkldflfxk lefsdnbl ke dklskdbkdlsfkbldk sgfs", key);
+            var res = cfb.encrypt("gdasdgdgdsdvjdsjjj", key);
             console.log('encrypt : ',res);
             console.log('decr : ', cfb.decrypt(res, key))
         },
@@ -314,7 +314,6 @@ var serpent = (function () {
                 encrypt: function (data, key) {
                     var result = '';
                     var p = prepareToBlocks(data);
-                    // console.log('p : ', p, splitBlock(p[1]), convertFrom128BitToString(splitBlock(p[1])));
                     var c = [c0];
                     for (var i = 1; i < p.length; i++) {
                         c[i] = encode(c[i - 1], key);

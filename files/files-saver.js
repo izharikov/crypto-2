@@ -1,14 +1,14 @@
 var fs = require('fs');
 
 var config = {
-    filePath : "/home/igor/WebstormProjects/CryptoServer/files-saved/"
+    filePath: "/home/igor/WebstormProjects/CryptoServer/files-saved/"
 };
 
-var fileTools = (function(){
+var fileTools = (function () {
     return {
-        read: function(fileName){
-            return new Promise(function(resolve, reject){
-                fs.readFile(config.filePath + fileName, function(err, data){
+        read: function (fileName) {
+            return new Promise(function (resolve, reject) {
+                fs.readFile(config.filePath + fileName, function (err, data) {
                     if (err)
                         reject(err);
                     else
@@ -16,14 +16,24 @@ var fileTools = (function(){
                 });
             })
         },
-        allFiles: function(){
-            return new Promise(function(resolve, reject){
-                fs.readdir(config.filePath, function(err, data){
+        allFiles: function () {
+            return new Promise(function (resolve, reject) {
+                fs.readdir(config.filePath, function (err, data) {
                     if (err)
                         reject(err);
                     else
                         resolve(data);
                 })
+            })
+        },
+        write: function (fileName, content) {
+            return new Promise(function (resolve, reject) {
+                fs.writeFile(config.filePath + fileName, content, function (err, data) {
+                    if (err)
+                        reject(err);
+                    else
+                        resolve(data);
+                });
             })
         }
     }
