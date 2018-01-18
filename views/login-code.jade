@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    h1= 'Login'
+    h1= 'SMS Verification'
     if error
         div(style="color: #b90a0a;")="Wrong password!"
     form(action="/login/token/send", method="post")

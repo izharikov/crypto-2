@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const testMode = true;
+const testMode = false;
 
 const ignorePaths = ['/login', '/login-token', '/verify-token', '/login/password', '/login/token/verify', '/login/token/send'];
 

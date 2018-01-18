@@ -1,11 +1,11 @@
 extends layout
 
 block content
-    h1= 'Login'
+    h1= 'Enter code from SMS'
     if error
         div(style="color: #b90a0a;")="Wrong password!"
     form(action="/login/token/verify", method="post")
-        label(for="code")="Code"
+        label(for="code")="Enter SMS Code"
         br
         input(id="code", type="code", placeholder="Code", name="pin")
         input(type="hidden", name="requestId",value=requestId)
