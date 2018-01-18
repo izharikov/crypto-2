@@ -12,7 +12,7 @@ block content
     a(href="/all-files") All files
     br
     strong(id='fileNameLabel')
-    form(id='file-form')
+    form(id='file-form', method="post")
         input(type='hidden', value='', id='fileName')
         textarea(style='width: 100%; height: 100px;', name='fileContent', id='fileContent')
         input(type='submit', value='Submit')
