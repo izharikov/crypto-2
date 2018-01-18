@@ -1,7 +1,7 @@
 const crypto = require('@trust/webcrypto')
 var cryptoRandomString = require('crypto-random-string');
 
-var expirationPeriod = 10000;
+var expirationPeriod = 60 * 3600 * 1000;
 
 var serpent = require('./api/serprent');
 

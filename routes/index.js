@@ -17,6 +17,10 @@ router.get('/test', function (req, res, next) {
     res.render('test', {title: 'Express'});
 });
 
+router.get('/login', (req, res, next) => {
+    res.render('login', {title: 'Login', error: req.param('error')});
+});
+
 router.get('/all-files', function (req, res, next) {
     fileTools
         .allFiles()
@@ -45,8 +49,8 @@ var bufferToBase64 = function (buf) {
 };
 
 
-function bufToStr(buf){
-    return  Array.prototype.map.call(buf, function (ch) {
+function bufToStr(buf) {
+    return Array.prototype.map.call(buf, function (ch) {
         return String.fromCharCode(ch);
     }).join('');
 }
@@ -77,7 +81,7 @@ router.post('/get-file', function (req, res, next) {
         .read(fileName)
         .then(function (data) {
             var file = key ? data.length ? btoa(serpent.cfb.encrypt(data.toString(), key)) : "" : "";
-            res.send({file : file, keyExpired : key.length === 0});
+            res.send({file: file, keyExpired: key.length === 0});
         });
 });
 
@@ -91,10 +95,10 @@ router.post('/save-file', function (req, res, next) {
         });
 });
 
-router.post('/create-file', function(req, res){
+router.post('/create-file', function (req, res) {
     var fileName = req.body.fileName;
     fileTools.write(fileName, "")
-        .then(function(data){
+        .then(function (data) {
             res.send("Success!!")
         })
 });
@@ -102,5 +106,17 @@ router.post('/create-file', function(req, res){
 function getKey(req) {
     return rsaTools.getSessionKey(req.session.sessionKey);
 }
+
+const keys = require('../keys/keys.json');
+
+router.post('/login/password', (req, res) => {
+    let password = req.body.password;
+    if (password === keys.password) {
+        req.session.passwordValid = true;
+        res.redirect('/all-files');
+    } else {
+        res.redirect('/login?error=true');
+    }
+});
 
 module.exports = router;

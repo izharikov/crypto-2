@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1= 'Login'
+    if error
+        div(style="color: #b90a0a;")="Wrong password!"
+    form(action="/login/password", method="post")
+        label(for="password")="Password"
+        br
+        input(id="password", type="password", placeholder="Password", name="password")
+        br
+        br
+        input(type="submit")

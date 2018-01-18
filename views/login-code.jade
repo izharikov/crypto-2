@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1= 'Login'
+    if error
+        div(style="color: #b90a0a;")="Wrong password!"
+    form(action="/login/token/send", method="post")
+        label(for="phone")="Enter Phone"
+        br
+        input(id="phone", type="text", placeholder="Phone", name="number")
+        br
+        br
+        input(type="submit")

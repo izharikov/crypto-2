@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h1= 'Login'
+    if error
+        div(style="color: #b90a0a;")="Wrong password!"
+    form(action="/login/token/verify", method="post")
+        label(for="code")="Code"
+        br
+        input(id="code", type="code", placeholder="Code", name="pin")
+        input(type="hidden", name="requestId",value=requestId)
+        br
+        br
+        input(type="submit")
